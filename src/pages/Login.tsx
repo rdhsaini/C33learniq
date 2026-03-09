@@ -7,9 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GraduationCap, Users, School } from "lucide-react";
 import type { UserRole } from "@/data/mockData";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [role, setRole] = useState<UserRole>("student");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
