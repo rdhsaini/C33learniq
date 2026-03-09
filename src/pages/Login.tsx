@@ -18,7 +18,7 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login — just navigate to the role-specific dashboard
+    login(role);
     if (role === "student") navigate("/student/chat");
     else if (role === "teacher") navigate("/teacher/dashboard");
     else navigate("/admin/overview");

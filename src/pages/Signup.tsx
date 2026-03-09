@@ -20,7 +20,7 @@ export default function Signup() {
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock signup — just navigate to the role-specific dashboard
+    login(role);
     if (role === "student") navigate("/student/chat");
     else if (role === "teacher") navigate("/teacher/dashboard");
     else navigate("/admin/overview");
