@@ -5,18 +5,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { chapters, mockChatHistory } from "@/data/mockData";
-import { Send, Mic, Book, ChevronDown } from "lucide-react";
+import { Send, Mic, Book, AlertCircle } from "lucide-react";
+
+type Citation = {
+  chapter: string;
+  page: number;
+  source_file: string;
+};
 
 type Message = {
   id: string;
   role: "user" | "assistant";
   content: string;
   timestamp: string;
-  citations?: { chapter: number; name: string; page: number }[];
+  citations?: Citation[];
+  error?: boolean;
 };
 
+// Convert mock chat history to the new citation format for initial display
+const initialMessages: Message[] = mockChatHistory.map((msg) => ({
+  ...msg,
+  citations: msg.citations?.map((c) => ({
+    chapter: `Chapter ${c.chapter} - ${c.name}`,
+    page: c.page,
+    source_file: "",
+  })),
+}));
+
 export default function StudentChat() {
-  const [messages, setMessages] = useState<Message[]>(mockChatHistory);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -28,7 +45,7 @@ export default function StudentChat() {
     }
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMsg: Message = {
@@ -39,24 +56,50 @@ export default function StudentChat() {
     };
 
     setMessages((prev) => [...prev, userMsg]);
+    const question = input;
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      // Call the real FastAPI backend
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question,
+          chapter: selectedChapter,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
       const aiMsg: Message = {
         id: `a${Date.now()}`,
         role: "assistant",
-        content:
-          "That's a great question! Based on your NCERT textbook, I found the following information:\n\n**Key Points:**\n1. This concept is covered in detail in your syllabus.\n2. Understanding the fundamentals will help you in your exams.\n3. Practice the related questions at the end of the chapter.\n\nWould you like me to explain any specific part in more detail?",
+        content: data.answer,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        citations: [
-          { chapter: selectedChapter || 1, name: chapters[(selectedChapter || 1) - 1].name, page: 15 },
-        ],
+        citations: data.citations,
       };
+
       setMessages((prev) => [...prev, aiMsg]);
+    } catch (err) {
+      // Fallback: show error message but keep the UI working
+      const errorMsg: Message = {
+        id: `e${Date.now()}`,
+        role: "assistant",
+        content:
+          "I'm having trouble connecting to the AI backend. Please make sure the backend server is running:\n\n```\ncd backend\nuvicorn main:app --port 8000\n```\n\nIn the meantime, you can still explore the quiz, progress, and dashboard features!",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        error: true,
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -121,10 +164,18 @@ export default function StudentChat() {
                   className={`max-w-[85%] ${
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground"
+                      : msg.error
+                      ? "bg-destructive/10 border-destructive/30"
                       : "bg-card"
                   }`}
                 >
                   <CardContent className="p-3">
+                    {msg.error && (
+                      <div className="flex items-center gap-2 mb-2 text-destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="text-xs font-medium">Connection Error</span>
+                      </div>
+                    )}
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     {msg.citations && msg.citations.length > 0 && (
                       <div className="mt-3 flex flex-wrap gap-2">
@@ -134,7 +185,7 @@ export default function StudentChat() {
                             variant="secondary"
                             className="text-xs bg-accent/20 text-accent-foreground"
                           >
-                            📖 Ch {cite.chapter}: {cite.name} (p.{cite.page})
+                            📖 {cite.chapter} (p.{cite.page})
                           </Badge>
                         ))}
                       </div>
@@ -177,14 +228,19 @@ export default function StudentChat() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a question in Hindi or English..."
               className="flex-1"
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              onKeyDown={(e) => e.key === "Enter" && !isTyping && handleSend()}
+              disabled={isTyping}
             />
-            <Button onClick={handleSend} disabled={!input.trim()} className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button
+              onClick={handleSend}
+              disabled={!input.trim() || isTyping}
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
               <Send className="h-4 w-4" />
             </Button>
           </div>
           <p className="text-xs text-center text-muted-foreground mt-2">
-            Answers are grounded in your NCERT textbook and cite the source chapter.
+            Powered by LangChain RetrievalQA + GPT-4o-mini — answers cite your NCERT textbook chapters.
           </p>
         </div>
       </div>
