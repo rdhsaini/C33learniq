@@ -22,7 +22,7 @@ from pydantic import BaseModel
 
 from rag_chain import get_qa_chain
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 # ── Logging ────────────────────────────────────────────────────────────────────
 logging.basicConfig(level=logging.INFO)

@@ -14,7 +14,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain.prompts import PromptTemplate
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 CHROMA_PERSIST = os.path.join(os.path.dirname(__file__), "chroma_db")

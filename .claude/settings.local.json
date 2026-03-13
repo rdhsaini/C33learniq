@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm install)",
+      "Bash(npx vite --port 8080 --host)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(mkdir -p \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ_backup\")",
+      "Bash(cp -R \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ/learniq_chatbot_app\" \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ_backup/\")",
+      "Bash(cp -R \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ/NCERT Class 8 Science PDF\" \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ_backup/\")",
+      "Bash(cp \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ/student_qa_logs_chapter1.json\" \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ_backup/\")",
+      "Bash(cp \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ/validation_guide.md\" \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ_backup/\")",
+      "Bash(cp \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ/.env.example\" \"/Users/minspk/Downloads/C33-Domain project/GLT-C33-LernerIQ_backup/\")",
+      "Read(//Users/minspk/Downloads/C33-Domain project/**)"
+    ]
+  }
+}

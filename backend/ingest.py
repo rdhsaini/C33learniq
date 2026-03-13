@@ -16,12 +16,17 @@ import glob
 import time
 from dotenv import load_dotenv
 
+import pypdf.filters
+
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+
+# Raise pypdf decompression limit for NCERT PDFs with heavy embedded images
+pypdf.filters.ZLIB_MAX_OUTPUT_LENGTH = 500 * 1024 * 1024  # 500 MB (default 75 MB)
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 # CHECKPOINT #3 — Change PDF_DIR for a different subject/grade
@@ -77,13 +82,19 @@ def main():
         sys.exit(1)
 
     all_docs = []
+    skipped = []
     for pdf_path in pdf_paths:
         filename = os.path.basename(pdf_path)
         stem = os.path.splitext(filename)[0]
         chapter_name = CHAPTER_MAP.get(stem, stem)
 
-        loader = PyPDFLoader(pdf_path)
-        pages = loader.load()
+        try:
+            loader = PyPDFLoader(pdf_path)
+            pages = loader.load()
+        except Exception as e:
+            print(f"  WARN: {filename:40s} -> SKIPPED ({type(e).__name__}: {e})")
+            skipped.append(filename)
+            continue
 
         for page in pages:
             page.metadata["chapter"] = chapter_name
@@ -91,6 +102,9 @@ def main():
 
         all_docs.extend(pages)
         print(f"  Loaded {filename:40s} -> {len(pages):3d} pages  [{chapter_name}]")
+
+    if skipped:
+        print(f"\n  WARNING: {len(skipped)} PDF(s) skipped due to parsing errors: {', '.join(skipped)}")
 
     print(f"\n  Total pages: {len(all_docs)}")
 
