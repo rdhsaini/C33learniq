@@ -41,3 +41,4 @@ pnpm-debug.log*
 
 # ── NCERT PDFs (too large for git) ────────────────────────────
 data/NCERT_PDFs/
+learneriq/

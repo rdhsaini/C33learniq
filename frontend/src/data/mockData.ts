@@ -1,15 +1,18 @@
-// ===================== NCERT Grade 8 Science Chapters =====================
+// ===================== NCERT Class 10 Science Chapters =====================
 export const chapters = [
-  { id: 1, name: "Crop Production and Management", subject: "Science" },
-  { id: 2, name: "Microorganisms: Friend and Foe", subject: "Science" },
-  { id: 3, name: "Synthetic Fibres and Plastics", subject: "Science" },
-  { id: 4, name: "Materials: Metals and Non-Metals", subject: "Science" },
-  { id: 5, name: "Coal and Petroleum", subject: "Science" },
-  { id: 6, name: "Combustion and Flame", subject: "Science" },
-  { id: 7, name: "Conservation of Plants and Animals", subject: "Science" },
-  { id: 8, name: "Cell — Structure and Functions", subject: "Science" },
-  { id: 9, name: "Reproduction in Animals", subject: "Science" },
-  { id: 10, name: "Reaching the Age of Adolescence", subject: "Science" },
+  { id: 1, name: "Chemical Reactions and Equations", subject: "Science" },
+  { id: 2, name: "Acids, Bases and Salts", subject: "Science" },
+  { id: 3, name: "Metals and Non-metals", subject: "Science" },
+  { id: 4, name: "Carbon and its Compounds", subject: "Science" },
+  { id: 5, name: "Life Processes", subject: "Science" },
+  { id: 6, name: "Control and Coordination", subject: "Science" },
+  { id: 7, name: "How do Organisms Reproduce?", subject: "Science" },
+  { id: 8, name: "Heredity and Evolution", subject: "Science" },
+  { id: 9, name: "Light: Reflection and Refraction", subject: "Science" },
+  { id: 10, name: "The Human Eye and the Colourful World", subject: "Science" },
+  { id: 11, name: "Electricity", subject: "Science" },
+  { id: 12, name: "Magnetic Effects of Electric Current", subject: "Science" },
+  { id: 13, name: "Our Environment", subject: "Science" },
 ];
 
 // ===================== Students =====================

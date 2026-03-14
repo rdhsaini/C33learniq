@@ -36,22 +36,24 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
 
+# NOTE: Files are named ncert_class8_science*.pdf but actually contain
+# NCERT Class 10 Science content. Map reflects actual PDF contents.
 CHAPTER_MAP = {
-    "ncert_class8_science1":  "Chapter 1 - Crop Production and Management",
-    "ncert_class8_science2":  "Chapter 2 - Microorganisms: Friend and Foe",
-    "ncert_class8_science3":  "Chapter 3 - Synthetic Fibres and Plastics",
-    "ncert_class8_science4":  "Chapter 4 - Materials: Metals and Non-Metals",
-    "ncert_class8_science5":  "Chapter 5 - Coal and Petroleum",
-    "ncert_class8_science6":  "Chapter 6 - Combustion and Flame",
-    "ncert_class8_science7":  "Chapter 7 - Conservation of Plants and Animals",
-    "ncert_class8_science8":  "Chapter 8 - Cell: Structure and Functions",
-    "ncert_class8_science9":  "Chapter 9 - Reproduction in Animals",
-    "ncert_class8_science10": "Chapter 10 - Reaching the Age of Adolescence",
-    "ncert_class8_science11": "Chapter 11 - Force and Pressure",
-    "ncert_class8_science12": "Chapter 12 - Friction",
-    "ncert_class8_science13": "Chapter 13 - Sound",
-    "ncert_class8_science14": "Chapter 14 - Chemical Effects of Electric Current",
-    "ncert_class8_science15": "Chapter 15 - Some Natural Phenomena",
+    "ncert_class8_science15": "Chapter 1 - Chemical Reactions and Equations",
+    "ncert_class8_science14": "Chapter 2 - Acids, Bases and Salts",
+    "ncert_class8_science13": "Chapter 3 - Metals and Non-metals",
+    "ncert_class8_science12": "Chapter 4 - Carbon and its Compounds",
+    "ncert_class8_science11": "Chapter 5 - Life Processes",
+    "ncert_class8_science10": "Chapter 6 - Control and Coordination",
+    "ncert_class8_science9":  "Chapter 7 - How do Organisms Reproduce?",
+    "ncert_class8_science8":  "Chapter 8 - Heredity and Evolution",
+    "ncert_class8_science7":  "Chapter 9 - Light: Reflection and Refraction",
+    "ncert_class8_science6":  "Chapter 10 - The Human Eye and the Colourful World",
+    "ncert_class8_science5":  "Chapter 11 - Electricity",
+    "ncert_class8_science4":  "Chapter 12 - Magnetic Effects of Electric Current",
+    "ncert_class8_science3":  "Chapter 13 - Our Environment",
+    "ncert_class8_science2":  "Answers",
+    "ncert_class8_science1":  "Front Matter",
 }
 
 
