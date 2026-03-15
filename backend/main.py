@@ -1,3 +1,5 @@
+from quiz import generate_quiz
+
 """
 LearnIQ — FastAPI Backend
 ==========================
@@ -137,3 +139,24 @@ def startup_event():
     except Exception as e:
         logger.warning(f"QA chain not loaded at startup: {e}")
         logger.warning("Run 'python ingest.py' to build the vector store.")
+
+class QuizRequest(BaseModel):
+    answer: str
+
+class QuizResponse(BaseModel):
+    question: str
+    options: dict
+    correct: str
+    explanation: str
+
+@app.post("/api/quiz", response_model=QuizResponse)
+def quiz(request: QuizRequest):
+    """Generate a MCQ based on the last answer given to the student."""
+    if not request.answer.strip():
+        raise HTTPException(status_code=400, detail="Answer cannot be empty.")
+    try:
+        result = generate_quiz(request.answer)
+        return QuizResponse(**result)
+    except Exception as e:
+        logger.error(f"Quiz generation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating quiz: {e}")
